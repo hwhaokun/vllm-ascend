@@ -59,7 +59,6 @@ _ASCEND_CUSTOMOP_IS_REIGISTERED = False
 _DEFAULT_BUFFER_SIZE = 200
 _MIN_DP_BUFFER_SIZE = 50
 _IS_MOE_MODEL = None
-_IS_VL_MODEL = None
 _ENABLE_SP = None
 _HAS_LAYER_IDX = None
 _SUBSCRIBED_COMPUTE_STREAMS = set()
@@ -832,18 +831,6 @@ def _is_contain_expert(config: Any):
                 return True
     return False
 
-
-def is_vl_model(vllm_config: VllmConfig):
-    """Checks if the model is a VL model by config"""
-    global _IS_VL_MODEL
-    if _IS_VL_MODEL is None and vllm_config and vllm_config.model_config:
-        hf_config = vllm_config.model_config.hf_config.to_dict()
-        if "thinker_config" in hf_config:
-            # Qwen-Omni-thinker models
-            _IS_VL_MODEL = True
-        else:
-            _IS_VL_MODEL = "vision_config" in hf_config
-    return _IS_VL_MODEL
 
 
 def has_rope(vllm_config: VllmConfig):
